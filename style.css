@@ -1,0 +1,24 @@
+/* main {
+    width: 1000px;
+    height: 1200px;
+    border: solid 2px black;
+} */
+
+.wrapper {
+    display: flex;
+}
+
+.wrapper > div {
+    font-size: 4vh;
+    color: white;
+    /* background: gray; */
+    margin: .1em;
+    padding: .3em;
+    border-radius: 3px;
+    flex: 1;
+    height: 60px;
+}
+
+.middle-panel {
+    color: white
+}
