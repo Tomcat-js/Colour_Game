@@ -54,10 +54,14 @@ const changeColour = e => {
     if (playerNumberedButtons.includes(targetClassName)) {
         e.target.style.backgroundColor = playerRandomColour
         newPlayerColours.splice(playerNumberedButtons.indexOf(targetClassName), 1, playerRandomColour)
-        // console.log(newPlayerColours)
+        
+        if (listOfWrongColours().length === 0) {
+            console.log("game over player wins")
+        }
     }
-}
 
+    
+}
 
 const btns = document.querySelectorAll('.btn')
 
@@ -88,7 +92,7 @@ const startGame = () => {
                 }
                 newAiColours.shift()
             } else {
-                console.log('game over')
+                console.log('game over computer wins')
                 clearInterval(aiPlay)
             }
 
@@ -101,5 +105,18 @@ const startGame = () => {
 
 middlePanel.addEventListener('click', startGame)
 
+// console.log(targetColour)
 
+const listOfWrongColours = () => {
+
+    let wrongColours = []
+
+    newPlayerColours.forEach(hexCode => {
+        if (hexCode !== targetColour) {
+            wrongColours.push(hexCode)
+        }
+    })
+
+    return wrongColours
+}
     
