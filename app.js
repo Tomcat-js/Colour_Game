@@ -2,35 +2,30 @@ const aiNumberedButtons = ['.one', '.two', '.three', '.four', '.five', '.six', '
 
 const playerNumberedButtons = ['.thirteen', '.fourteen', '.fifteen', '.sixteen', '.seventeen', '.eighteen', '.nineteen', '.twenty', '.t-one', '.t-two', '.t-three', '.t-four']
 
-const aiColours = ['#e6194b', '#000075', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff']
+let aiColours, playerColours, targetColours 
 
-const playerColours = ['#e6194b', '#000075', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff']
+aiColours = playerColours = targetColours = ['#e6194b', '#000075', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff']
 
 const middlePanel = document.querySelector('.middle-panel')
 
-const targetColour = '#e6194b'
-
-
-
 function shuffle(array) {
-    let currentIndex = array.length,  randomIndex;
+    let currentIndex = array.length,  randomIndex
     
     while (currentIndex != 0) {
         
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
+        randomIndex = Math.floor(Math.random() * currentIndex)
+        currentIndex--
         
         [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
-        }
-        
-        return array;
+            array[randomIndex], array[currentIndex]]
     }
+        
+    return array
+}
     
-    shuffle(aiColours)
-    shuffle(playerColours) 
+    shuffle(aiColours, playerColours, targetColours)
     
-    
+
     let newAiColours = [...aiColours]
     
     let newPlayerColours = [...playerColours]
@@ -54,13 +49,14 @@ const changeColour = e => {
 
     playerRandomColour = playerColours[Math.floor(Math.random() * playerColours.length)] 
 
-    if (playerNumberedButtons.includes('.' + e.target.className.slice(4))) {
+    let targetClassName = '.' + e.target.className.slice(4)
+
+    if (playerNumberedButtons.includes(targetClassName)) {
         e.target.style.backgroundColor = playerRandomColour
-        newPlayerColours.splice(playerNumberedButtons.indexOf('.' + e.target.className.slice(4)), 1, playerRandomColour)
+        newPlayerColours.splice(playerNumberedButtons.indexOf(targetClassName), 1, playerRandomColour)
         // console.log(newPlayerColours)
     }
 }
-
 
 
 const btns = document.querySelectorAll('.btn')
@@ -70,9 +66,11 @@ for (let i = 0; i < btns.length; i++) {
     btns[i].addEventListener("click", changeColour)
 }
 
+let targetColour = targetColours[0]
 
 let displayTargetColour = document.querySelector('.middle-panel').style.backgroundColor = targetColour
 
+// console.log(displayTargetColour)
 
 let idx = 0
 
