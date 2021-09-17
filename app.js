@@ -2,13 +2,15 @@ const aiNumberedButtons = ['.one', '.two', '.three', '.four', '.five', '.six', '
 
 const playerNumberedButtons = ['.thirteen', '.fourteen', '.fifteen', '.sixteen', '.seventeen', '.eighteen', '.nineteen', '.twenty', '.t-one', '.t-two', '.t-three', '.t-four']
 
-let aiColours, playerColours, targetColours 
-
-aiColours = playerColours = targetColours = ['#e6194b', '#000075', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff']
+const playerColours = ['#e6194b', '#000075', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff']
+const aiColours = ['#e6194b', '#000075', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff']
+const targetColours = ['#e6194b', '#000075', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff']
 
 
 
 const middlePanel = document.querySelector('.middle-panel')
+
+let middlePanelClicked = false
 
 let gameOver = false
 
@@ -27,7 +29,7 @@ function shuffle(array) {
     return array
 }
     
-    shuffle(aiColours, playerColours, targetColours)
+    
     
 
     let newAiColours = [...aiColours]
@@ -40,6 +42,10 @@ function shuffle(array) {
 
 const refreshGame = () => {
 
+    newPlayerColours = [...playerColours]
+
+    console.log(newPlayerColours)
+
     aiNumberedButtons.forEach((btn, i)=> {
         document.querySelector(btn).style.backgroundColor = aiColours[i]
     })
@@ -48,10 +54,15 @@ const refreshGame = () => {
         document.querySelector(btn).style.backgroundColor = playerColours[i]
     })
 
+    let randomColour = shuffle(targetColours)
+    targetColour = randomColour[0]
+
+    document.querySelector('.middle-panel').style.backgroundColor = targetColour
+    gameOver = false
+
+    startGame()
     
 }    
-
-
 
 
 const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
@@ -60,20 +71,20 @@ let playerRandomColour = playerColours[Math.floor(Math.random() * playerColours.
 
 const changeColour = e => {
 
-    playerRandomColour = playerColours[Math.floor(Math.random() * playerColours.length)] 
+    if (middlePanelClicked === true) {
+        playerRandomColour = playerColours[Math.floor(Math.random() * playerColours.length)] 
 
-    let targetClassName = '.' + e.target.className.slice(4)
-
-    if (playerNumberedButtons.includes(targetClassName)) {
-        e.target.style.backgroundColor = playerRandomColour
-        newPlayerColours.splice(playerNumberedButtons.indexOf(targetClassName), 1, playerRandomColour)
-
-        if (listOfWrongColours().length === 0) {
-            console.log("game over player wins")
-        }
-    }
-
+        let targetClassName = '.' + e.target.className.slice(4)
     
+        if (playerNumberedButtons.includes(targetClassName)) {
+            e.target.style.backgroundColor = playerRandomColour
+            newPlayerColours.splice(playerNumberedButtons.indexOf(targetClassName), 1, playerRandomColour)
+    
+            if (listOfWrongColours().length === 0) {
+                console.log("game over player wins")
+            }
+        }    
+    }    
 }
 
 const btns = document.querySelectorAll('.btn')
@@ -86,15 +97,17 @@ for (let i = 0; i < btns.length; i++) {
 
 
 
-let idx = 0
+
 
 const startGame = () => {
 
-    if (gameOver === false) {
+    if (gameOver === false && middlePanelClicked === false) {
+        let idx = 0
+        middlePanelClicked = true
         const aiPlay = setInterval(
             function () {
                 if (idx < 12) {
-                    console.log(idx)
+                    // console.log(idx)
                     let colour = aiColours[Math.floor(Math.random() * aiColours.length)]
                     document.querySelector(aiNumberedButtons[idx]).style.backgroundColor = colour
          
@@ -104,13 +117,14 @@ const startGame = () => {
                     newAiColours.shift()
                 } else {
                     gameOver = true
+                    middlePanelClicked = false
                     console.log('game over computer wins')
                     clearInterval(aiPlay)
                 }
     
             },
         50)
-    } else (
+    } else if (middlePanelClicked === false)(
         refreshGame()
     )
 
@@ -133,4 +147,19 @@ const listOfWrongColours = () => {
     return wrongColours
 }
  
-// refreshGame()
+
+const defaultPage = () => {
+
+    shuffle(aiColours, playerColours, targetColours)
+
+    aiNumberedButtons.forEach((btn, i)=> {
+        document.querySelector(btn).style.backgroundColor = aiColours[i]
+    })
+    
+    playerNumberedButtons.forEach((btn, i)=> {
+        document.querySelector(btn).style.backgroundColor = playerColours[i]
+    })
+}
+
+
+defaultPage()
