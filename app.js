@@ -43,37 +43,37 @@ shuffle(targetColours)
 
 let targetColour = targetColours[0]
 
-let displayTargetColour = document.querySelector('.middle-panel').style.backgroundColor = targetColour 
+let displayTargetColour = middlePanel.style.backgroundColor = targetColour 
 
 
 
 
 
 
-const refreshGame = () => {
+// const refreshGame = () => {
 
-    shuffle(aiColours)
-    shuffle(playerColours)
+//     shuffle(aiColours)
+//     shuffle(playerColours)
 
-    newPlayerColours = [...playerColours]
+//     newPlayerColours = [...playerColours]
 
-    aiNumberedButtons.forEach((btn, i)=> {
-        document.querySelector(btn).style.backgroundColor = aiColours[i]
-    })
+//     aiNumberedButtons.forEach((btn, i)=> {
+//         document.querySelector(btn).style.backgroundColor = aiColours[i]
+//     })
     
-    playerNumberedButtons.forEach((btn, i)=> {
-        document.querySelector(btn).style.backgroundColor = playerColours[i]
-    })
+//     playerNumberedButtons.forEach((btn, i)=> {
+//         document.querySelector(btn).style.backgroundColor = playerColours[i]
+//     })
 
-    let randomColour = shuffle(targetColours)
-    targetColour = randomColour[0]
+//     let randomColour = shuffle(targetColours)
+//     targetColour = randomColour[0]
 
-    document.querySelector('.middle-panel').style.backgroundColor = targetColour
-    gameOver = false
+//     document.querySelector('.middle-panel').style.backgroundColor = targetColour
+//     gameOver = false
 
-    startGame()
+//     startGame()
     
-}    
+// }    
 
 
 const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
@@ -90,10 +90,13 @@ const changeColour = e => {
         if (playerNumberedButtons.includes(targetClassName)) {
             e.target.style.backgroundColor = playerRandomColour
             newPlayerColours.splice(playerNumberedButtons.indexOf(targetClassName), 1, playerRandomColour)
+
+            console.log(listOfWrongColours())
     
             if (listOfWrongColours().length === 0) {
                 clearInterval(aiPlay)
-                // middlePanelClicked = false
+                gameOver = true
+                middlePanelClicked = false
                 console.log("game over player wins")
             }
         }    
@@ -135,7 +138,7 @@ const startGame = () => {
                 }
     
             },
-        500)
+        900)
     } else if (middlePanelClicked === false)(
         refreshGame()
     )
