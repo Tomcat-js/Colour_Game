@@ -27,6 +27,7 @@ const middlePanel = document.querySelector('.middle-panel')
 let middlePanelClicked = false
 let currentPlayerColours 
 let computerInPlay
+let gameOver = false
 
 const displayDefualtPage = () => {
 
@@ -54,7 +55,10 @@ displayDefualtPage()
 
 
 const startGame = () => {
-    if (middlePanelClicked === false) {
+    if (middlePanelClicked === false && gameOver === true) {
+        displayDefualtPage()
+        startComputerInPlay()
+    } else if (middlePanelClicked === false) {
         startComputerInPlay()
     }
 }
@@ -62,6 +66,7 @@ const startGame = () => {
 const declareWinner = winner => {
     console.log(`game over ${winner} wins`)
     middlePanelClicked = false
+    gameOver = true
     clearInterval(computerInPlay)
 }
 
@@ -70,6 +75,7 @@ const startComputerInPlay = () => {
     let idx = 0
 
     middlePanelClicked = true
+    gameOver = false
 
     computerInPlay = setInterval(
         function () {
@@ -84,7 +90,7 @@ const startComputerInPlay = () => {
                 declareWinner('computer')
             }
         },
-    5000)
+    20)
 }
 
 const allEqual = arr => arr.every(v => v === arr[0])
