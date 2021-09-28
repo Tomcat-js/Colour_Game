@@ -7,6 +7,7 @@ let computerColours = ['#e6194b', '#000075', '#ffe119', '#4363d8', '#f58231', '#
 let targetColours = ['#e6194b', '#000075', '#ffe119', '#4363d8', '#f58231', '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe', '#008080', '#e6beff']
 
 const shuffle = array => {
+
     let currentIndex = array.length,  randomIndex
     
     while (currentIndex != 0) {
@@ -58,6 +59,12 @@ const startGame = () => {
     }
 }
 
+const declareWinner = winner => {
+    console.log(`game over ${winner} wins`)
+    middlePanelClicked = false
+    clearInterval(computerInPlay)
+}
+
 const startComputerInPlay = () => {
 
     let idx = 0
@@ -74,9 +81,7 @@ const startComputerInPlay = () => {
                     idx += 1
                 }
             } else {
-                console.log('game over computer wins')
-                middlePanelClicked = false
-                clearInterval(computerInPlay)
+                declareWinner('computer')
             }
         },
     5000)
@@ -85,10 +90,8 @@ const startComputerInPlay = () => {
 const allEqual = arr => arr.every(v => v === arr[0])
 
 const checkIfPlayerWon = () => {
-   
     if (currentPlayerColours[0] === targetColour && allEqual(currentPlayerColours)) {
-        console.log("game over player wins")
-        clearInterval(computerInPlay)
+        declareWinner('player')
     }   
 }
 
