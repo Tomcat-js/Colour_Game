@@ -25,6 +25,7 @@ let targetColour
 const middlePanel = document.querySelector('.middle-panel')
 let middlePanelClicked = false
 let currentPlayerColours 
+let computerInPlay
 
 const displayDefualtPage = () => {
 
@@ -49,7 +50,7 @@ const displayDefualtPage = () => {
 displayDefualtPage()
 
 
-let idx = 0
+
 
 const startGame = () => {
     if (middlePanelClicked === false) {
@@ -59,9 +60,11 @@ const startGame = () => {
 
 const startComputerInPlay = () => {
 
+    let idx = 0
+
     middlePanelClicked = true
 
-    let computerInPlay = setInterval(
+    computerInPlay = setInterval(
         function () {
             if (idx < 12) {
                 let randomComputerColour = computerColours[Math.floor(Math.random() * computerColours.length)]
@@ -79,6 +82,15 @@ const startComputerInPlay = () => {
     5000)
 }
 
+const allEqual = arr => arr.every(v => v === arr[0])
+
+const checkIfPlayerWon = () => {
+   
+    if (currentPlayerColours[0] === targetColour && allEqual(currentPlayerColours)) {
+        console.log("game over player wins")
+        clearInterval(computerInPlay)
+    }   
+}
 
 
 
@@ -93,6 +105,7 @@ const changePlayerBrickColour = e => {
         if (playerBrickClasses.includes(targetClassName)) {
             updateCurrentPlayerColours(randomPlayerColour, targetClassName)
             e.target.style.backgroundColor = randomPlayerColour
+            checkIfPlayerWon()
         }
     }
 }
@@ -110,8 +123,5 @@ for (let i = 0; i < bricks.length; i++) {
 middlePanel.addEventListener('click', startGame)
 
 const updateCurrentPlayerColours = (newColour, targetClassName) => {
-    // console.log(playerBrickClasses.indexOf(targetClassName))
-    // console.log(newColour)
     currentPlayerColours.splice(playerBrickClasses.indexOf(targetClassName), 1, newColour)
-    console.log(currentPlayerColours)
 }
