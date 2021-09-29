@@ -31,6 +31,7 @@ let gameOver = false
 let playerColourOptions = []
 let randomPlayerColour
 let playerClickCount = 0
+let gameSpeed = 350 
 
 const createPlayerColourOptions = () => {
     playerColours.forEach(colour => {
@@ -60,6 +61,7 @@ const displayDefualtPage = () => {
 
     createPlayerColourOptions()
 
+    console.log(gameSpeed)
 }
 
 displayDefualtPage()
@@ -79,6 +81,10 @@ const declareWinner = winner => {
     middlePanelClicked = false
     gameOver = true
     clearInterval(computerInPlay)
+
+    if (winner === 'player') {
+        gameSpeed -= 5
+    } 
 }
 
 const startComputerInPlay = () => {
@@ -101,7 +107,7 @@ const startComputerInPlay = () => {
                 declareWinner('computer')
             }
         },
-    200)
+    gameSpeed)
 }
 
 const allEqual = arr => arr.every(v => v === arr[0])
@@ -116,7 +122,7 @@ const checkIfPlayerWon = () => {
 
 const changePlayerBrickColour = e => {
 
-    let randomLimit = Math.round(Math.random() * 20)
+    let randomLimit = Math.round(Math.random() * 15)
 
     if (middlePanelClicked === true) {
 
@@ -128,7 +134,7 @@ const changePlayerBrickColour = e => {
             playerClickCount = 0
         }
 
-        console.log(playerColourOptions)
+        // console.log(playerColourOptions)
         randomPlayerColour = playerColourOptions[Math.floor(Math.random() * playerColourOptions.length)] 
         // console.log(playerClickCount)
 
