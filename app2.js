@@ -28,6 +28,17 @@ let middlePanelClicked = false
 let currentPlayerColours 
 let computerInPlay
 let gameOver = false
+let playerColourOptions = []
+let randomPlayerColour
+let playerClickCount = 0
+
+const createPlayerColourOptions = () => {
+    playerColours.forEach(colour => {
+        if (colour !== targetColour) playerColourOptions.push(colour)  
+    })
+    // Add target colour to end of array
+    playerColourOptions.push(targetColour)
+}
 
 const displayDefualtPage = () => {
 
@@ -47,11 +58,11 @@ const displayDefualtPage = () => {
 
     currentPlayerColours = [...playerColours]
 
+    createPlayerColourOptions()
+
 }
 
 displayDefualtPage()
-
-
 
 
 const startGame = () => {
@@ -90,7 +101,7 @@ const startComputerInPlay = () => {
                 declareWinner('computer')
             }
         },
-    20)
+    200)
 }
 
 const allEqual = arr => arr.every(v => v === arr[0])
@@ -105,11 +116,22 @@ const checkIfPlayerWon = () => {
 
 const changePlayerBrickColour = e => {
 
+    let randomLimit = Math.round(Math.random() * 20)
+
     if (middlePanelClicked === true) {
-        let randomPlayerColour = playerColours[Math.floor(Math.random() * playerColours.length)] 
 
         let targetClassName = '.' + e.target.className.slice(6)
-        // console.log(targetClassName)
+        playerClickCount ++
+
+        if (playerClickCount > randomLimit && playerColourOptions[0] != targetColour) {
+            playerColourOptions.shift()
+            playerClickCount = 0
+        }
+
+        console.log(playerColourOptions)
+        randomPlayerColour = playerColourOptions[Math.floor(Math.random() * playerColourOptions.length)] 
+        // console.log(playerClickCount)
+
     
         if (playerBrickClasses.includes(targetClassName)) {
             updateCurrentPlayerColours(randomPlayerColour, targetClassName)
