@@ -69,8 +69,6 @@ const displayDefualtPage = () => {
     currentPlayerColours = [...shuffledPlayerColours]
 
     createPlayerColourOptions()
-
-    // console.log(gameSpeed)
 }
 
 displayDefualtPage()
@@ -109,9 +107,9 @@ const prepareForNextGame = winner => {
     } 
 }
 
-const moveToNextBrick = () => {
+const moveToNextBrick = (brickId) => {
 
-    computerBrickIdx += 1
+    return brickId += 1
 }
 
 const startComputerInPlay = () => {
@@ -127,7 +125,7 @@ const startComputerInPlay = () => {
                 computerBricks[computerBrickIdx].style.backgroundColor = randomComputerColour
         
                 if (randomComputerColour === targetColour) {
-                    moveToNextBrick()
+                    computerBrickIdx = moveToNextBrick(computerBrickIdx)
                 }
             } else {
                 declareWinner('computer')
@@ -160,24 +158,24 @@ const changePlayerBrickColour = event => {
 
     if (middlePanelClicked === true) {
 
-        console.log(event.target.dataset)
+        let targetIdx
 
-        let targetClassName = '.' + event.target.className.slice(classNameNumberPosition)
+        for (let i = 0; i < playerBricks.length; i++) {
+            if (playerBricks[i] === event.target) {
+                targetIdx = i
+            } 
+        }
+
         playerClickCount ++
 
-        // console.log(playerColourOptions)    
         randomPlayerColour = playerColourOptions[Math.floor(Math.random() * playerColourOptions.length)] 
 
-        // if (playerBricks.includes(targetClassName)) {
-            reducePlayerColourOptions()
-            updateCurrentPlayerColours(randomPlayerColour, targetClassName)
-            event.target.style.backgroundColor = randomPlayerColour
-            checkIfPlayerWon()
-        // }
+        reducePlayerColourOptions()
+        updateCurrentPlayerColours(randomPlayerColour, targetIdx)
+        event.target.style.backgroundColor = randomPlayerColour
+        checkIfPlayerWon()
     }
 }
-
-// const bricks = document.querySelectorAll('.brick')
 
 
 for (let i = 0; i < playerBricks.length; i++) {
@@ -187,12 +185,7 @@ for (let i = 0; i < playerBricks.length; i++) {
 
 middlePanel.addEventListener('click', startGame)
 
-const updateCurrentPlayerColours = (newColour, targetClassName) => {
-    // currentPlayerColours.splice(playerBricks.indexOf(targetClassName), 1, newColour)
-    // console.log(newColour)
-    // console.log(targetClassName)
+const updateCurrentPlayerColours = (newColour, targetIdx) => {
+    currentPlayerColours.splice(targetIdx, 1, newColour)
+    console.log(playerColourOptions)
 }
-
-// const test = document.querySelector('[data-num]')
-
-// console.log(test.dataset.num=2)
