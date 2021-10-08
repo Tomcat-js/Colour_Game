@@ -158,13 +158,7 @@ const changePlayerBrickColour = event => {
 
     if (middlePanelClicked === true) {
 
-        let targetIdx
-
-        for (let i = 0; i < playerBricks.length; i++) {
-            if (playerBricks[i] === event.target) {
-                targetIdx = i
-            } 
-        }
+        let targetIdx = Array.from(playerBricks).findIndex((brick) => brick === event.target)
 
         playerClickCount ++
 
